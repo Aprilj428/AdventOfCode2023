@@ -5,7 +5,6 @@
         <TargetFramework>net8.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
-        <RootNamespace>AdventOfCode2023Day1</RootNamespace>
     </PropertyGroup>
 
     <ItemGroup>
@@ -13,5 +12,5 @@
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </Content>
     </ItemGroup>
-
+    
 </Project>
