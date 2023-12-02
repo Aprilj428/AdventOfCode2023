@@ -22,5 +22,8 @@ var totalOfImpossibleGames = games
     .Where(game => !game.IsPossible(limits))
     .Select(game => game.Id)
     .Sum();
+
+var sum = games.Sum(x => x.PowerOfLeastAmountOfRequiredCubes);
     
 Console.WriteLine($"Total of impossible games: {totalOfImpossibleGames}");
+Console.WriteLine($"Sum of the power of least amount of required cubes: {sum}");

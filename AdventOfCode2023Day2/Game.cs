@@ -16,4 +16,14 @@ public class Game
     public IReadOnlyCollection<Pull> Pulls { get; }
 
     public bool IsPossible(Dictionary<Color, int> limits) => Pulls.Any(pull => !pull.IsPossible(limits));
+
+    public int PowerOfLeastAmountOfRequiredCubes => GetHighestCountForColor(Color.Red) *
+                                                    GetHighestCountForColor(Color.Blue) *
+                                                    GetHighestCountForColor(Color.Green);
+    
+    private int GetHighestCountForColor(Color color) => Pulls
+        .SelectMany(pull => pull.CubesPulled)
+        .Where(cube => cube.Color == color)
+        .Select(x => x.Count)
+        .Max();
 }
