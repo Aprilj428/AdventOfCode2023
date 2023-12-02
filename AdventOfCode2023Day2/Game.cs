@@ -14,4 +14,6 @@ public class Game
     
     public long Id { get; }
     public IReadOnlyCollection<Pull> Pulls { get; }
+
+    public bool IsPossible(Dictionary<Color, int> limits) => Pulls.Any(pull => !pull.IsPossible(limits));
 }
