@@ -8,4 +8,10 @@
         <RootNamespace>AdventOfCode2023Day1</RootNamespace>
     </PropertyGroup>
 
+    <ItemGroup>
+        <Content Include="input.txt">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+    </ItemGroup>
+
 </Project>
