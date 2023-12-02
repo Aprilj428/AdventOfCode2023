@@ -1,4 +1,4 @@
-﻿using var streamReader = new StreamReader("./input.txt");
+﻿using var streamReader = new StreamReader("./day1-input.txt");
 int total = 0;
 while (!streamReader.EndOfStream)
 {
