@@ -17,6 +17,7 @@ public class Part : IAdjacent
     public bool IsDot => Character == '.';
     public bool IsStar => Character == '*';
     public bool CoordinateMatch(int row, int column) => Row == row && column == Column;
+    public (int row, int column) Coordinates => (Row, Column);
     
     public IEnumerable<(int row, int column)> AdjacentCoordinates()
     {

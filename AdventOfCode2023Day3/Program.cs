@@ -16,24 +16,53 @@ while (!streamReader.EndOfStream)
 }
 
 var partNumbers = partRows.SelectMany(x => x.GetPartNumbers()).ToList();
-var adjacentPartNumbers = partNumbers.Where(x => CheckForAdjacent(partRows, x)).ToList();
-var partNumberTotal = adjacentPartNumbers.Sum(x => x.Value);
+
+//Part 1
+var partNumbersAdjacentToSymbol = partNumbers.Where(x => CheckForAdjacent(partRows, x, p => p.IsSymbol)).ToList();
+var partNumberTotal = partNumbersAdjacentToSymbol.Sum(x => x.Value);
+
+//Part 2
+var potentialGears = partRows.SelectMany(x => x.GetAllPartsByCharacter('*')).ToList();
+var totalOfGears = 0;
+foreach (var gear in potentialGears)
+{
+    var adjacentPartNumbers = GetAdjacentPartNumbers(partRows, partNumbers, gear).ToList();
+    if (adjacentPartNumbers.Count() == 2)
+    {
+        totalOfGears += adjacentPartNumbers[0].Value * adjacentPartNumbers[1].Value;
+    }
+}
 
 Console.WriteLine($"Total of part numbers adjacent to symbol: {partNumberTotal}");
+Console.WriteLine($"Total of gears: {totalOfGears}");
 
-bool CheckForAdjacent(ICollection<PartRow> allRows, IAdjacent adjacent)
+IEnumerable<PartNumber> GetAdjacentPartNumbers(ICollection<PartRow> allRows, ICollection<PartNumber> allPartNumbers, IAdjacent adjacent)
 {
+    var adjacentIntegersToGear = GetAdjacentParts(allRows, adjacent, p => p.IsInteger);
+    foreach (var partNumber in allPartNumbers)
+    {
+        if (adjacentIntegersToGear.Any(x => partNumber.CoordinateMatch(x)))
+            yield return partNumber;
+    }
+}
+
+ICollection<Part> GetAdjacentParts(ICollection<PartRow> allRows, IAdjacent adjacent, Func<Part, bool> match)
+{
+    var adjacentParts = new List<Part>();
     foreach (var (rowCoord, columnCoord) in adjacent.AdjacentCoordinates())
     {
         var adjacentRow = allRows.FirstOrDefault(x => x.Row == rowCoord);
-        if (adjacentRow is null)
+        var partInColumn = adjacentRow?.FindByColumn(columnCoord);
+        if (partInColumn is null)
             continue;
         
-        var partInColumn = adjacentRow.FindByColumn(columnCoord);
-        if (partInColumn?.IsSymbol == true)
-            return true;
+        if (match(partInColumn))
+            adjacentParts.Add(partInColumn);
         
     }
-
-    return false;
+    
+    return adjacentParts;
 }
+
+
+bool CheckForAdjacent(ICollection<PartRow> allRows, IAdjacent adjacent, Func<Part, bool> match) => GetAdjacentParts(allRows, adjacent, match).Count != 0;

@@ -16,6 +16,9 @@ public class PartNumber : IAdjacent
     public int Row => _parts.First().Row;
     public int Value { get; }
 
+    public bool CoordinateMatch(Part part) => Coordinates.Any(coord => part.CoordinateMatch(coord.row, coord.column));
+    public bool IsAdjacentTo(Part part) => AdjacentCoordinates().Any(coord => part.CoordinateMatch(coord.row, coord.column));
+    public IEnumerable<(int row, int column)> Coordinates => _parts.Select(x => x.Coordinates).ToList();
     public IEnumerable<(int row, int column)> AdjacentCoordinates() => _parts
         .SelectMany(p => p.AdjacentCoordinates())
         //Avoid returning adjacent part coordinates that are a part of the PartNumber

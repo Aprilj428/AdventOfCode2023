@@ -37,5 +37,7 @@ public class PartRow
         return partNumbers;
     }
     
+    public ICollection<Part> GetAllPartsByCharacter(char character) => _parts.Where(x => x.Character == character).ToList();
+    public ICollection<(int row, int colum)> Coordinates => _parts.Select(p => (p.Row, p.Column)).ToList();
     public Part? FindByColumn(int column) => _parts.FirstOrDefault(part => part.Column == column);
 }
